@@ -134,11 +134,11 @@ def main(args):
     csv.register_dialect('unix-tab', delimiter='\t', doublequote=False, lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
     writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames, dialect='unix-tab')
     writer.writeheader()
-    
-    for mob_typer_record in mob_typer_report:
-        for abricate_record in abricate_report:
-            if re.search(mob_typer_record['primary_cluster_id'], abricate_record['file']) and abricate_record['resistance'] == "CARBAPENEM":
-                output_record = {
+
+
+    for abricate_record in abricate_report:
+        if re.search("chromosome", abricate_record['file']) and abricate_record['resistance'] == "CARBAPENEM":
+            output_record = {
                     "sample_id": args.sample_id,  
                     "assembly_file": abricate_record["file"],
                     "resistance_gene": abricate_record["gene"],
@@ -146,13 +146,32 @@ def main(args):
                     "gene_end": abricate_record["end"],
                     "percent_resistance_gene_coverage": abricate_record["percent_coverage"],
                     "percent_resistance_gene_identity": abricate_record["percent_identity"],
-                    "replicon_types": mob_typer_record["rep_types"],
-                    "mob_suite_primary_cluster_id": mob_typer_record["primary_cluster_id"],
-                    "mob_suite_secondary_cluster_id": mob_typer_record["secondary_cluster_id"],
-                    "mash_nearest_neighbor": mob_typer_record["mash_nearest_neighbor"],
-                    "mash_neighbor_distance": mob_typer_record["mash_neighbor_distance"],
-                }
-                writer.writerow(output_record)
+                    "replicon_types": "-",
+                    "mob_suite_primary_cluster_id": "-",
+                    "mob_suite_secondary_cluster_id": "-",
+                    "mash_nearest_neighbor": "-",
+                    "mash_neighbor_distance": "_",
+            }
+            writer.writerow(output_record)
+        else:
+            for mob_typer_record in mob_typer_report:
+                if re.search(mob_typer_record['primary_cluster_id'], abricate_record['file']) and abricate_record['resistance'] == "CARBAPENEM":
+                    output_record = {
+                        "sample_id": args.sample_id,  
+                        "assembly_file": abricate_record["file"],
+                        "resistance_gene": abricate_record["gene"],
+                        "gene_start": abricate_record["start"],
+                        "gene_end": abricate_record["end"],
+                        "percent_resistance_gene_coverage": abricate_record["percent_coverage"],
+                        "percent_resistance_gene_identity": abricate_record["percent_identity"],
+                        "replicon_types": mob_typer_record["rep_types"],
+                        "mob_suite_primary_cluster_id": mob_typer_record["primary_cluster_id"],
+                        "mob_suite_secondary_cluster_id": mob_typer_record["secondary_cluster_id"],
+                        "mash_nearest_neighbor": mob_typer_record["mash_nearest_neighbor"],
+                        "mash_neighbor_distance": mob_typer_record["mash_neighbor_distance"],
+                    }
+                    writer.writerow(output_record)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='')

@@ -11,7 +11,7 @@ include { join_mob_typer_and_abricate_reports } from './modules/join_reports.nf'
 
 workflow {
   ch_fastq = Channel.fromFilePairs( "${params.fastq_input}/*_{R1,R2}_*.fastq.gz" )
-  ch_abricate_dbs = Channel.of(["ncbi"])
+  ch_abricate_dbs = Channel.from("ncbi")
   
   main:
     trimReads(ch_fastq)
