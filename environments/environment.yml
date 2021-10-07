@@ -6,10 +6,14 @@ channels:
 dependencies:
   - python=3
   - biopython=1.74
-  - checkm-genome=1.1.3
   - quast=5.0.2
-  - trim-galore=0.6.5
+  - seqkit=0.15.0
+  - fastp=0.22.0
   - unicycler=0.4.8
-  - mob_suite=3.0.1
+  - spades=3.13.0
+  - bwa=0.7.17
+  - samtools=1.13
   - abricate=1.0.1
-
+  - blast=2.11.0
+  - mob_suite=3.0.3
+  - mash=2.3

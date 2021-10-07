@@ -2,8 +2,8 @@ process align_reads_to_reference_plasmid {
 
     tag { sample_id + " / " + plasmid_id }
 
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "${sample_id}_${plasmid_id}.sorted{.bam,.bam.bai}", mode: 'copy'
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "${reference_plasmid}", mode: 'copy'
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}.sorted{.bam,.bam.bai}", mode: 'copy'
+    publishDir "${params.outdir}/${sample_id}", pattern: "${reference_plasmid}", mode: 'copy'
     
     cpus 8
 

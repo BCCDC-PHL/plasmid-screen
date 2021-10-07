@@ -2,8 +2,6 @@ process select_resistance_contigs {
 
     tag { sample_id }
 
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "selected/${sample_id}*.fasta", mode: 'copy'
-
     cpus 1
 
     executor 'local'

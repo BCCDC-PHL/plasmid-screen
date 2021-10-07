@@ -2,12 +2,10 @@ process mash_screen {
 
     tag { sample_id }
 
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "${sample_id}.mash_screen.tsv", mode: 'copy'
-
-    cpus 4
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}.mash_screen.tsv", mode: 'copy'
 
     input:
-      tuple val(sample_id),  path(reads_r1), path(reads_r2), path(mob_db)
+      tuple val(sample_id), path(reads_r1), path(reads_r2), path(mob_db)
 
     output:
       tuple val(sample_id), path("${sample_id}.mash_screen.tsv")

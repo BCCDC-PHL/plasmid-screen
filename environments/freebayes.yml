@@ -1,0 +1,8 @@
+name: plasmid-screen-freebayes
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - freebayes=1.3.5
+  - bcftools

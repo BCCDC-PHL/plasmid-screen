@@ -120,6 +120,9 @@ def main(args):
     output_fieldnames = [
         "sample_id",
         "assembly_file",
+        "resistance_gene_contig",
+        "num_contigs_in_reconstruction",
+        "reconstruction_size",
         "resistance_gene",
         "gene_start",
         "gene_end",
@@ -139,18 +142,21 @@ def main(args):
     for abricate_record in abricate_report:
         if re.search("chromosome", abricate_record['file']) and abricate_record['resistance'] == "CARBAPENEM":
             output_record = {
-                    "sample_id": args.sample_id,  
-                    "assembly_file": abricate_record["file"],
-                    "resistance_gene": abricate_record["gene"],
-                    "gene_start": abricate_record["start"],
-                    "gene_end": abricate_record["end"],
-                    "percent_resistance_gene_coverage": abricate_record["percent_coverage"],
-                    "percent_resistance_gene_identity": abricate_record["percent_identity"],
-                    "replicon_types": "-",
-                    "mob_suite_primary_cluster_id": "-",
-                    "mob_suite_secondary_cluster_id": "-",
-                    "mash_nearest_neighbor": "-",
-                    "mash_neighbor_distance": "_",
+                "sample_id": args.sample_id,  
+                "assembly_file": abricate_record["file"],
+                "resistance_gene_contig": abricate_record['sequence'],
+                "num_contigs_in_reconstruction": "-",
+                "reconstruction_size": "-",
+                "resistance_gene": abricate_record["gene"],
+                "gene_start": abricate_record["start"],
+                "gene_end": abricate_record["end"],
+                "percent_resistance_gene_coverage": abricate_record["percent_coverage"],
+                "percent_resistance_gene_identity": abricate_record["percent_identity"],
+                "replicon_types": "-",
+                "mob_suite_primary_cluster_id": "-",
+                "mob_suite_secondary_cluster_id": "-",
+                "mash_nearest_neighbor": "-",
+                "mash_neighbor_distance": "_",
             }
             writer.writerow(output_record)
         else:
@@ -159,6 +165,9 @@ def main(args):
                     output_record = {
                         "sample_id": args.sample_id,  
                         "assembly_file": abricate_record["file"],
+                        "resistance_gene_contig": abricate_record['sequence'],
+                        "num_contigs_in_reconstruction": mob_typer_record['num_contigs'],
+                        "reconstruction_size": mob_typer_record['size'],
                         "resistance_gene": abricate_record["gene"],
                         "gene_start": abricate_record["start"],
                         "gene_end": abricate_record["end"],

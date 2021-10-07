@@ -51,6 +51,7 @@ def parse_abricate_report(abricate_report_path):
 
     return abricate_report
 
+
 def main(args):
     abricate_report = parse_abricate_report(args.abricate_report)
     # print(json.dumps(abricate_report))

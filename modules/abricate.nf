@@ -1,19 +1,19 @@
 process abricate {
 
-    tag { assembly.baseName + " / " + database }
+    tag { sample_id }
 
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "${assembly.baseName}_${database}_abricate.tsv", mode: 'copy'
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_abricate.tsv", mode: 'copy'
 
     cpus 1
 
     input:
-      tuple val(sample_id),  path(assembly), val(database)
+      tuple val(sample_id),  path(assembly)
 
     output:
-      tuple val(sample_id), path("${assembly.baseName}_${database}_abricate.tsv")
+      tuple val(sample_id), path("${sample_id}_abricate.tsv")
 
     script:
       """
-      abricate --db ${database} ${assembly} > ${assembly.baseName}_${database}_abricate.tsv
+      abricate --db ncbi ${assembly} > ${sample_id}_abricate.tsv
       """
 }

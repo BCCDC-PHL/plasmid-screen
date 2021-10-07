@@ -2,7 +2,7 @@ process join_mob_typer_and_abricate_reports {
 
     tag { mob_typer_report.baseName + " / " + abricate_report.baseName }
 
-    publishDir "${params.outdir}/${task.process.replaceAll(":","_")}", pattern: "${abricate_report.baseName}_resistance_plasmids.tsv", mode: 'copy'
+    publishDir "${params.outdir}/${sample_id}", pattern: "${abricate_report.baseName}_resistance_plasmids.tsv", mode: 'copy'
 
     executor 'local'
 
