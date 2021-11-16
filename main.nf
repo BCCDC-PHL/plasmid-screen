@@ -41,7 +41,8 @@ workflow {
 
     ch_mob_recon = mob_recon(ch_assemblies.combine(ch_mob_db))
 
-    ch_mob_recon_sequences = mob_recon.out.sequences.map{ it -> it[1].collect{ x -> [it[0], x]} }.flatMap{ it -> it }
+    // pass reconstructed plasmids as [sample_id, [seq1, seq2, seq3...]]
+    ch_mob_recon_sequences = mob_recon.out.sequences.map{ it -> [it[0], it[1..-1][0]] }
 
     ch_abricate = abricate(ch_mob_recon_sequences)
 

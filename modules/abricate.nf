@@ -7,13 +7,13 @@ process abricate {
     cpus 1
 
     input:
-      tuple val(sample_id),  path(assembly)
+      tuple val(sample_id),  path(assemblies)
 
     output:
       tuple val(sample_id), path("${sample_id}_abricate.tsv")
 
     script:
       """
-      abricate --db ncbi ${assembly} > ${sample_id}_abricate.tsv
+      abricate --db ncbi ${assemblies} > ${sample_id}_abricate.tsv
       """
 }

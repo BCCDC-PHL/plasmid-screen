@@ -1,6 +1,6 @@
 process call_snps {
 
-  tag { sample_id + '/' + plasmid_id }
+  tag { sample_id + ' / ' + plasmid_id }
 
   publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}.snps.vcf", mode: 'copy'
 

@@ -1,5 +1,7 @@
 process choose_reference_plasmid_for_sample {
 
+    tag { sample_id }
+
     executor 'local'
 
     input:
