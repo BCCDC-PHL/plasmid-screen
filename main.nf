@@ -62,7 +62,7 @@ workflow {
 
     calculate_coverage(align_reads_to_reference_plasmid.out)
 
-    ch_above_coverage_threshold = calculate_coverage.out.filter{ it -> file(it[1]).readLines()[0].split(',')[2].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
+    ch_above_coverage_threshold = calculate_coverage.out.filter{ it -> file(it[1]).readLines()[1].split(',')[2].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
 
     call_snps(ch_above_coverage_threshold.join(align_reads_to_reference_plasmid.out))
     
