@@ -17,7 +17,7 @@ def main(args):
         'ref_plasmid_length',
         'positions_above_coverage_threshold',
         'percent_coverage_above_threshold',
-    ])
+    ]))
     print(','.join([
         str(all_positions),
         str(positions_above_threshold),
