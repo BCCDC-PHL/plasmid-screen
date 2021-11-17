@@ -12,6 +12,6 @@ process call_snps {
 
   script:
   """
-  freebayes -f ${reference_plasmid} --ploidy 1 --min-base-quality 20 --min-mapping-quality 60 --min-coverage 10 --min-alternate-fraction 0.8 --min-repeat-entropy 1.0 ${alignment} | bcftools view -H -Ov -v snps,mnps > ${sample_id}_${plasmid_id}.snps.vcf
+  freebayes -f ${reference_plasmid} --ploidy 1 --min-base-quality 20 --min-mapping-quality 60 --min-coverage 10 --min-alternate-fraction 0.8 --min-repeat-entropy 1.0 ${alignment} | bcftools view -Ov --types "snps,mnps" > ${sample_id}_${plasmid_id}.snps.vcf
   """
 }
