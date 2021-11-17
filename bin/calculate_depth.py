@@ -14,6 +14,11 @@ def main(args):
             positions_above_threshold += 1
 
     print(','.join([
+        'ref_plasmid_length',
+        'positions_above_coverage_threshold',
+        'percent_coverage_above_threshold',
+    ])
+    print(','.join([
         str(all_positions),
         str(positions_above_threshold),
         str(round(float(positions_above_threshold) / float(all_positions) * 100, 3)),
