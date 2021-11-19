@@ -31,7 +31,7 @@ workflow {
     trim_reads(ch_fastq)
 
     if (params.pre_assembled) {
-      ch_assemblies = Channel.fromPath( params.assembly_search_path ).map{ it -> [it.baseName, it] }.unique{ it -> it[0] }
+      ch_assemblies = Channel.fromPath( params.assembly_search_path ).map{ it -> [it.baseName.split('_')[0], it] }.unique{ it -> it[0] }
     } else {
       ch_assemblies = unicycler(trim_reads.out.reads)
     }
