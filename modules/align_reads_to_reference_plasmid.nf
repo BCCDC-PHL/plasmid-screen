@@ -4,8 +4,6 @@ process align_reads_to_reference_plasmid {
 
     publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}.sorted{.bam,.bam.bai}", mode: 'copy'
     publishDir "${params.outdir}/${sample_id}", pattern: "${reference_plasmid}", mode: 'copy'
-    
-    cpus 8
 
     input:
       tuple val(sample_id), path(reads_r1), path(reads_r2), val(plasmid_id), path(reference_plasmid)
