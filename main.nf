@@ -19,7 +19,7 @@ include { get_reference_plasmid } from './modules/get_reference_plasmid.nf'
 include { align_reads_to_reference_plasmid } from './modules/align_reads_to_reference_plasmid.nf'
 include { calculate_coverage } from './modules/calculate_coverage.nf'
 include { call_snps } from './modules/freebayes.nf'
-
+include { join_resistance_plasmid_and_snp_reports } from './modules/join_reports.nf'
 
 workflow {
   ch_fastq = Channel.fromFilePairs( params.fastq_search_path, flat: true ).map{ it -> [it[0].split('_')[0], it[1], it[2]] }.unique{ it -> it[0] }
@@ -65,5 +65,7 @@ workflow {
     ch_above_coverage_threshold = calculate_coverage.out.filter{ it -> file(it[1]).readLines()[1].split(',')[2].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
 
     call_snps(ch_above_coverage_threshold.join(align_reads_to_reference_plasmid.out))
+
+    join_resistance_plasmid_and_snp_reports(ch_combined_abricate_mobtyper_report.join(call_snps.out.num_snps))
     
 }
