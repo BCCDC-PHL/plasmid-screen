@@ -7,7 +7,6 @@ nextflow.enable.dsl = 2
 
 include { trim_reads } from './modules/fastp.nf'
 include { unicycler } from './modules/unicycler.nf'
-include { platon } from './modules/platon.nf'
 include { mash_screen } from './modules/mash_screen.nf'
 include { quast } from './modules/quast.nf'
 include { mob_recon } from './modules/mob_recon.nf'
@@ -20,7 +19,7 @@ include { get_reference_plasmid } from './modules/get_reference_plasmid.nf'
 include { align_reads_to_reference_plasmid } from './modules/align_reads_to_reference_plasmid.nf'
 include { calculate_coverage } from './modules/calculate_coverage.nf'
 include { call_snps } from './modules/freebayes.nf'
-include { breseq } from './modules/breseq.nf'
+
 
 workflow {
   ch_fastq = Channel.fromFilePairs( params.fastq_search_path, flat: true ).map{ it -> [it[0].split('_')[0], it[1], it[2]] }.unique{ it -> it[0] }
@@ -66,7 +65,5 @@ workflow {
     ch_above_coverage_threshold = calculate_coverage.out.filter{ it -> file(it[1]).readLines()[1].split(',')[2].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
 
     call_snps(ch_above_coverage_threshold.join(align_reads_to_reference_plasmid.out))
-
-    breseq(ch_above_coverage_threshold.join(trim_reads.out.reads.join(ch_reference_plasmid_for_sample)))
     
 }
