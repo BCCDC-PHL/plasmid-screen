@@ -2,12 +2,16 @@
 
 ## Usage
 
+This pipeline is designed to take either raw reads alone, or assemblies plus raw reads as input. If only reads are provided, they will be assembled with [unicycler](https://github.com/rrwick/Unicycler).
+
 ```
 nextflow run BCCDC-PHL/plasmid-screen \
   --fastq_input </path/to/fastqs> \
   --mob_db </path/to/mob-suite-db> \
   --outdir </path/to/outdir> 
 ```
+
+If assemblies are already available, they can be provided by adding the `--pre_assembled` flag, and supplying the assemblies to the `--assembly_input` flag.
 
 ```
 nextflow run BCCDC-PHL/plasmid-screen \
