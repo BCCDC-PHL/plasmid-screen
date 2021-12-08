@@ -10,6 +10,7 @@ process align_reads_to_reference_plasmid {
 
     output:
       tuple val(sample_id), val(plasmid_id), path(reference_plasmid), path("${sample_id}_${plasmid_id}.sorted.bam"), path("${sample_id}_${plasmid_id}.sorted.bam.bai"), emit: alignment
+      tuple val(sample_id), path("${sample_id}_${plasmid_id}_coverage.csv"), emit: coverage
       tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
 
     script:
@@ -23,6 +24,7 @@ process align_reads_to_reference_plasmid {
       printf -- "  tool_name: samtools\\n  tool_version: \$(samtools --version | grep 'samtools' | cut -d ' ' -f 2)\\n" >> ${sample_id}_bwa_samtools_provenance.yml
       printf -- "  parameters:\\n" >> ${sample_id}_bwa_samtools_provenance.yml
       printf -- "  - parameter: exclude_flags\\n    value: 1540\\n" >> ${sample_id}_bwa_samtools_provenance.yml
+
       samtools faidx ${reference_plasmid}
       bwa index ${reference_plasmid}
       bwa mem -a -Y -M -t ${task.cpus} ${reference_plasmid} ${reads_r1} ${reads_r2} | \
@@ -32,5 +34,7 @@ process align_reads_to_reference_plasmid {
         samtools sort -@ ${task.cpus} | \
         samtools markdup - - > ${sample_id}_${plasmid_id}.sorted.bam
       samtools index ${sample_id}_${plasmid_id}.sorted.bam
+
+      samtools depth -aa ${sample_id}_${plasmid_id}.sorted.bam | calculate_depth.py --sample-id ${sample_id} --plasmid-id ${plasmid_id} > ${sample_id}_${plasmid_id}_coverage.csv
       """
 }

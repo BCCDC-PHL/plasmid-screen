@@ -44,7 +44,32 @@ mob_suite_secondary_cluster_id
 mash_nearest_neighbor
 mash_neighbor_distance
 alignment_ref_plasmid
+depth_coverage_threshold
+percent_ref_plasmid_coverage_above_depth_threshold
 num_snps_vs_ref_plasmid
+```
+
+### Additional Output Files
+
+For each sample, the following output files are created:
+
+```
+sample-01/
+├── sample-01_20211207163723_provenance.yml
+├── sample-01_abricate.tsv
+├── sample-01_chromosome.fasta
+├── sample-01_fastp.csv
+├── sample-01_mash_screen.tsv
+├── sample-01_mobtyper_contig_report.tsv
+├── sample-01_mobtyper_plasmid_report.tsv
+├── sample-01_NC_019152.1_resistance_plasmids.tsv
+├── sample-01_NC_019152.1.snps.vcf
+├── sample-01_NC_019152.1.sorted.bam
+├── sample-01_NC_019152.1.sorted.bam.bai
+├── sample-01_plasmid_AA023.fasta
+├── sample-01_plasmid_AA026.fasta
+├── sample-01_quast.csv
+└── NC_019152.1.fa
 ```
 
 ### Provenance
