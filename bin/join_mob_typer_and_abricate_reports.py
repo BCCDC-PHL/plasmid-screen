@@ -133,6 +133,8 @@ def main(args):
         "mob_suite_secondary_cluster_id",
         "mash_nearest_neighbor",
         "mash_neighbor_distance",
+        "alignment_ref_plasmid",
+        "num_snps_vs_ref_plasmid",
     ]
     csv.register_dialect('unix-tab', delimiter='\t', doublequote=False, lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
     writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames, dialect='unix-tab')
@@ -157,6 +159,8 @@ def main(args):
                 "mob_suite_secondary_cluster_id": "-",
                 "mash_nearest_neighbor": "-",
                 "mash_neighbor_distance": "_",
+                "alignment_ref_plasmid": "-",
+                "num_snps_vs_ref_plasmid": "-",
             }
             writer.writerow(output_record)
         else:
@@ -178,6 +182,8 @@ def main(args):
                         "mob_suite_secondary_cluster_id": mob_typer_record["secondary_cluster_id"],
                         "mash_nearest_neighbor": mob_typer_record["mash_nearest_neighbor"],
                         "mash_neighbor_distance": mob_typer_record["mash_neighbor_distance"],
+                        "alignment_ref_plasmid": "-",
+                        "num_snps_vs_ref_plasmid": "-",
                     }
                     writer.writerow(output_record)
 

@@ -7,6 +7,7 @@ nextflow.enable.dsl = 2
 include { hash_files as hash_files_fastq } from './modules/hash_files.nf'
 include { hash_files as hash_files_assemblies } from './modules/hash_files.nf'
 include { trim_reads } from './modules/fastp.nf'
+include { fastp_json_to_csv } from './modules/fastp.nf'
 include { unicycler } from './modules/unicycler.nf'
 include { mash_screen } from './modules/mash_screen.nf'
 include { quast } from './modules/quast.nf'
@@ -41,6 +42,8 @@ workflow {
 
     trim_reads(ch_fastq)
 
+    fastp_json_to_csv(trim_reads.out.json)
+
     if (params.pre_assembled) {
       ch_assemblies = Channel.fromPath( params.assembly_search_path ).map{ it -> [it.baseName.split('_')[0], it] }.unique{ it -> it[0] }
       hash_files_assemblies(ch_assemblies.map{ it -> [it[0], [it[1]]] }.combine(Channel.of("assembly_input")))
@@ -62,9 +65,9 @@ workflow {
 
     abricate(ch_mob_recon_sequences)
 
-    select_resistance_contigs(mob_recon.out.sequences.join(abricate.out.report))
+    // select_resistance_contigs(mob_recon.out.sequences.join(abricate.out.report))
 
-    select_resistance_reconstructions(mob_recon.out.sequences.join(abricate.out.report))
+    // select_resistance_reconstructions(mob_recon.out.sequences.join(abricate.out.report))
 
     ch_join_reports_input = mob_recon.out.mobtyper_reports.cross(abricate.out.report).map{ it -> [it[0][0], it[0][1], it[1][1]] }
 
@@ -76,16 +79,15 @@ workflow {
 
     align_reads_to_reference_plasmid(trim_reads.out.reads.join(ch_reference_plasmid_for_sample))
 
-    calculate_coverage(align_reads_to_reference_plasmid.out.alignment)
-
-    ch_above_coverage_threshold = calculate_coverage.out.filter{ it -> file(it[1]).readLines()[1].split(',')[2].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
+    ch_above_coverage_threshold = align_reads_to_reference_plasmid.out.coverage.filter{ it -> file(it[1]).readLines()[1].split(',')[5].toFloat() > params.min_plasmid_coverage_breadth }.map{ it -> it[0] }
 
     call_snps(ch_above_coverage_threshold.join(align_reads_to_reference_plasmid.out.alignment))
 
-    join_resistance_plasmid_and_snp_reports(ch_combined_abricate_mobtyper_report.join(call_snps.out.num_snps))
+    join_resistance_plasmid_and_snp_reports(ch_combined_abricate_mobtyper_report.join(call_snps.out.num_snps).join(align_reads_to_reference_plasmid.out.coverage))
 
     ch_provenance = mob_recon.out.provenance
     ch_provenance = ch_provenance.join(abricate.out.provenance).map{ it -> [it[0], [it[1]] << it[2]] }
+    ch_provenance = ch_provenance.join(trim_reads.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(hash_files_fastq.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     if (params.pre_assembled) {
       ch_provenance = ch_provenance.join(hash_files_assemblies.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
