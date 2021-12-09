@@ -27,6 +27,8 @@ def parse_resistance_plasmid_report(resistance_plasmid_report_path):
         "mash_nearest_neighbor",
         "mash_neighbor_distance",
         "alignment_ref_plasmid",
+        "depth_coverage_threshold",
+        "percent_ref_plasmid_coverage_above_depth_threshold",
         "num_snps_vs_ref_plasmid",
     ]
 
@@ -41,6 +43,7 @@ def parse_resistance_plasmid_report(resistance_plasmid_report_path):
         "percent_resistance_gene_coverage",
         "percent_resistance_gene_identity",
         "mash_neighbor_distance",
+        "percent_ref_plasmid_coverage_above_depth_threshold",
     ]
 
     with open(resistance_plasmid_report_path, 'r') as f:
@@ -48,9 +51,11 @@ def parse_resistance_plasmid_report(resistance_plasmid_report_path):
         next(reader)
         for row in reader:
             for field in int_fields:
-                row[field] = int(row[field])
+                if row[field] != '-':
+                    row[field] = int(row[field])
             for field in float_fields:
-                row[field] = float(row[field])
+                if row[field] != '-':
+                    row[field] = float(row[field])
             resistance_plasmid_report.append(row)
 
     return resistance_plasmid_report
@@ -150,16 +155,19 @@ def main(args):
     for record in resistance_plasmid_report:
         sample_id = record['sample_id']
         alignment_ref_plasmid = '.'.join(snp_report[sample_id]['alignment_ref_plasmid'].split('.')[:-1])
-        num_snps = snp_report[sample_id]['num_snps']
 
-        depth_coverage_threshold = coverage_report[sample_id][alignment_ref_plasmid]['depth_coverage_threshold']
-        percent_ref_plasmid_coverage_above_depth_threshold = coverage_report[sample_id][alignment_ref_plasmid]['percent_positions_above_depth_coverage_threshold']
+        if record['mash_nearest_neighbor'] == alignment_ref_plasmid:
+            num_snps = snp_report[sample_id]['num_snps']
+
+            depth_coverage_threshold = coverage_report[sample_id][alignment_ref_plasmid]['depth_coverage_threshold']
+            percent_ref_plasmid_coverage_above_depth_threshold = coverage_report[sample_id][alignment_ref_plasmid]['percent_positions_above_depth_coverage_threshold']
         
-        record['alignment_ref_plasmid'] = alignment_ref_plasmid
-        record['depth_coverage_threshold'] = depth_coverage_threshold
-        record['percent_ref_plasmid_coverage_above_depth_threshold'] = percent_ref_plasmid_coverage_above_depth_threshold
-        record['num_snps_vs_ref_plasmid'] = num_snps
-        writer.writerow(record)
+            record['alignment_ref_plasmid'] = alignment_ref_plasmid
+            record['depth_coverage_threshold'] = depth_coverage_threshold
+            record['percent_ref_plasmid_coverage_above_depth_threshold'] = percent_ref_plasmid_coverage_above_depth_threshold
+            record['num_snps_vs_ref_plasmid'] = num_snps
+
+            writer.writerow(record)
         
         
 
