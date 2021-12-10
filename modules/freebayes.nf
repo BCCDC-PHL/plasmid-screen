@@ -16,7 +16,8 @@ process call_snps {
   """
   printf -- "- process_name: call_snps\\n" > ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  tool_name: freebayes\\n  tool_version: \$(freebayes --version 2>&1 | cut -d ' ' -f 3 | tr -d 'v')\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
-  printf -- "  ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
+  printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
+  printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  - parameter: ploidy\\n    value: 1\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  - parameter: min_base_quality\\n    value: 20\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
@@ -25,8 +26,9 @@ process call_snps {
   printf -- "  - parameter: min_alternate_fraction\\n    value: 0.8\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  - parameter: min_repeat_entropy\\n    value: 1.0\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "- process_name: call_snps\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
+  printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
+  printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  tool_name: bcftools\\n  tool_version: \$(bcftools --version | grep 'bcftools' | cut -d ' ' -f 2)\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
-  printf -- "  ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  subcommand: view\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
   printf -- "  - parameter: include\\n    value: INFO/TYPE=snp\\n" >> ${sample_id}_${plasmid_id}_freebayes_provenance.yml
