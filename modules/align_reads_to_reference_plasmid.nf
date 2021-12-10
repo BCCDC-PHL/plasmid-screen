@@ -10,7 +10,7 @@ process align_reads_to_reference_plasmid {
 
     output:
       tuple val(sample_id), val(plasmid_id), path(reference_plasmid), path("${sample_id}_${plasmid_id}.sorted.bam"), path("${sample_id}_${plasmid_id}.sorted.bam.bai"), emit: alignment
-      tuple val(sample_id), path("${sample_id}_${plasmid_id}_coverage.csv"), emit: coverage
+      tuple val(sample_id), val(plasmid_id), path("${sample_id}_${plasmid_id}_coverage.csv"), emit: coverage
       tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
 
     script:

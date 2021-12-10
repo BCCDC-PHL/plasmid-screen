@@ -134,6 +134,8 @@ def main(args):
         "mash_nearest_neighbor",
         "mash_neighbor_distance",
         "alignment_ref_plasmid",
+        "depth_coverage_threshold",
+        "percent_ref_plasmid_coverage_above_depth_threshold",
         "num_snps_vs_ref_plasmid",
     ]
     csv.register_dialect('unix-tab', delimiter='\t', doublequote=False, lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
@@ -160,6 +162,8 @@ def main(args):
                 "mash_nearest_neighbor": "-",
                 "mash_neighbor_distance": "_",
                 "alignment_ref_plasmid": "-",
+                "depth_coverage_threshold": "-",
+                "percent_ref_plasmid_coverage_above_depth_threshold": "-",
                 "num_snps_vs_ref_plasmid": "-",
             }
             writer.writerow(output_record)
@@ -183,6 +187,8 @@ def main(args):
                         "mash_nearest_neighbor": mob_typer_record["mash_nearest_neighbor"],
                         "mash_neighbor_distance": mob_typer_record["mash_neighbor_distance"],
                         "alignment_ref_plasmid": "-",
+                        "depth_coverage_threshold": "-",
+                        "percent_ref_plasmid_coverage_above_depth_threshold": "-",
                         "num_snps_vs_ref_plasmid": "-",
                     }
                     writer.writerow(output_record)

@@ -1,11 +1,11 @@
 process get_reference_plasmid {
 
-    tag { sample_id + " / " + plasmid_cluster_id + " / " + reference_plasmid_id }
+    tag { sample_id + " / " + reference_plasmid_id }
 
     executor 'local'
 
     input:
-      tuple val(sample_id), val(plasmid_cluster_id), val(reference_plasmid_id), path(mob_db)
+      tuple val(sample_id), val(reference_plasmid_id), path(mob_db)
 
     output:
       tuple val(sample_id), val(reference_plasmid_id), path("${reference_plasmid_id}.fa")
