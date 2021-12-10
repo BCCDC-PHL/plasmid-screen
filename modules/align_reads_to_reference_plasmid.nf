@@ -16,14 +16,23 @@ process align_reads_to_reference_plasmid {
     script:
       // SAM flag 1540 = 'read unmapped' + 'read fails quality checks' + 'read is optical duplicate'
       """
-      printf -- "- process_name: align_reads_to_reference_plasmid\\n" > ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  tool_name: bwa\\n  tool_version: \$(bwa 2>&1 | grep 'Version' | cut -d ' ' -f 2)\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  parameters:\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  - parameter: alignment_algorithm\\n    value: mem\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "- process_name: align_reads_to_reference_plasmid\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  tool_name: samtools\\n  tool_version: \$(samtools --version | grep 'samtools' | cut -d ' ' -f 2)\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  parameters:\\n" >> ${sample_id}_bwa_samtools_provenance.yml
-      printf -- "  - parameter: exclude_flags\\n    value: 1540\\n" >> ${sample_id}_bwa_samtools_provenance.yml
+      printf -- "- process_name: align_reads_to_reference_plasmid\\n" > ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  tool_name: bwa\\n  tool_version: \$(bwa 2>&1 | grep 'Version' | cut -d ' ' -f 2)\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  subcommand: mem\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  - parameter: alignment_algorithm\\n    value: mem\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  - parameter: output_all_alignments\\n    value: true\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  - parameter: use_soft_clipping_for_supplementary_alignments\\n    value: true\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  - parameter: mark_shorter_split_hits_as_secondary\\n    value: true\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "- process_name: align_reads_to_reference_plasmid\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  tool_name: samtools\\n  tool_version: \$(samtools --version | grep 'samtools' | cut -d ' ' -f 2)\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  subcommand: view\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
+      printf -- "  - parameter: exclude_flags\\n    value: 1540\\n" >> ${sample_id}_${plasmid_id}_bwa_samtools_provenance.yml
 
       samtools faidx ${reference_plasmid}
       bwa index ${reference_plasmid}

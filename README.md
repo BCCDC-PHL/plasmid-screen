@@ -128,6 +128,12 @@ Example provenance output:
   parameters:
   - parameter: db
     value: ncbi
+- process_name: trim_reads
+  tool_name: fastp
+  tool_version: 0.22.0
+  parameters:
+  - parameter: cut_tail
+    value: true
 - input_filename: sample-01_R1.fastq.gz
   input_path: /path/to/sample-01_R1_001.fastq.gz
   sha256: b0534592d61321243897e842a9ea655d396d4496cbf6d926b6c6fea8e06aa98d
@@ -138,18 +144,26 @@ Example provenance output:
   input_path: /path/to/sample-01.fa
   sha256: 6fffb542711ee301ef1185a403a74fed36c066872e3fbfb7aa5c81464243bd00
 - process_name: align_reads_to_reference_plasmid
+  process_tags:
+    ref_plasmid_id: NC_019152.1
   tool_name: bwa
+  subcommand: mem
   tool_version: 0.7.17-r1188
   parameters:
   - parameter: alignment_algorithm
     value: mem
 - process_name: align_reads_to_reference_plasmid
+  process_tags:
+    ref_plasmid_id: NC_019152.1
   tool_name: samtools
+  subcommand: view
   tool_version: 1.13
   parameters:
   - parameter: exclude_flags
     value: 1540
 - process_name: call_snps
+  process_tags:
+    ref_plasmid_id: NC_019152.1
   tool_name: freebayes
   tool_version: 1.3.5
   parameters:
@@ -166,8 +180,14 @@ Example provenance output:
   - parameter: min_repeat_entropy
     value: 1.0
 - process_name: call_snps
+  process_tags:
+    ref_plasmid_id: NC_019152.1
   tool_name: bcftools
+  subcommand: view
   tool_version: 1.12
+  parameters:
+  - parameter: include
+    value: INFO/TYPE=snp
 - process_name: quast
   tool_name: quast
   tool_version: 5.0.2
