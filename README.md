@@ -22,6 +22,39 @@ nextflow run BCCDC-PHL/plasmid-screen \
   --outdir </path/to/outdir> 
 ```
 
+Alternatively, a 'samplesheet.csv' file may be provided with fields `ID`, `R1`, `R2`:
+
+```csv
+ID,R1,R2
+sample-01,/path/to/sample-01_R1.fastq.gz,/path/to/sample-01_R2.fastq.gz
+sample-02,/path/to/sample-02_R1.fastq.gz,/path/to/sample-02_R2.fastq.gz
+...
+```
+
+```
+nextflow run BCCDC-PHL/plasmid-screen \
+  --samplesheet_input </path/to/samplesheet.csv> \
+  --mob_db </path/to/mob-suite-db> \
+  --outdir </path/to/outdir> 
+```
+
+...or if assemblies are available, the `samplesheet.csv` file may also include the field `ASSEMBLY`:
+
+```csv
+ID,R1,R2,ASSEMBLY
+sample-01,/path/to/sample-01_R1.fastq.gz,/path/to/sample-01_R2.fastq.gz,/path/to/sample-01.fa
+sample-02,/path/to/sample-02_R1.fastq.gz,/path/to/sample-02_R2.fastq.gz,/path/to/sample-01.fa
+...
+```
+
+```
+nextflow run BCCDC-PHL/plasmid-screen \
+  --pre_assembled \
+  --samplesheet_input </path/to/samplesheet.csv> \
+  --mob_db </path/to/mob-suite-db> \
+  --outdir </path/to/outdir> 
+```
+
 ## Outputs
 
 The main output of the pipeline is the 'Resistance gene report', which summarizes where the resistance gene was located (contig and position), the quality of the resitance gene match (% identity and
