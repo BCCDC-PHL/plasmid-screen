@@ -106,8 +106,8 @@ workflow {
     if (params.pre_assembled) {
       ch_provenance = ch_provenance.join(hash_files_assemblies.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     }
-    ch_provenance = ch_provenance.join(align_reads_to_reference_plasmid.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
-    ch_provenance = ch_provenance.join(call_snps.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
+    ch_provenance = ch_provenance.join(align_reads_to_reference_plasmid.out.provenance, remainder: true).map{ it -> it.collect{ x -> x ? x : [] }}.map{ it -> [it[0], it[1] << it[2]] }.groupTuple().map{ it -> [it[0], it[1].flatten()] }
+    ch_provenance = ch_provenance.join(call_snps.out.provenance, remainder: true).map{ it -> it.collect{ x -> x ? x : [] }}.map{ it -> [it[0], it[1] << it[2]] }.groupTuple().map{ it -> [it[0], it[1].flatten()] }
     ch_provenance = ch_provenance.join(quast.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(ch_fastq.map{ it -> it[0] }.combine(ch_pipeline_provenance)).map{ it -> [it[0], it[1] << it[2]] }
     collect_provenance(ch_provenance)
