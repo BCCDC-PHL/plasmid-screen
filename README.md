@@ -24,7 +24,7 @@ nextflow run BCCDC-PHL/plasmid-screen \
 
 ## Outputs
 
-The main output of the pipeline is the 'Resistance plasmid report', which summarizes where the resistance gene was located (contig and position), the quality of the resitance gene match (% identity and
+The main output of the pipeline is the 'Resistance gene report', which summarizes where the resistance gene was located (contig and position), the quality of the resitance gene match (% identity and
 % coverage) and a characterization of the plasmid reconstruction. The report includes the following fields:
 
 ```
@@ -62,7 +62,7 @@ sample-01/
 ├── sample-01_mash_screen.tsv
 ├── sample-01_mobtyper_contig_report.tsv
 ├── sample-01_mobtyper_plasmid_report.tsv
-├── sample-01_NC_019152.1_resistance_plasmids.tsv
+├── sample-01_resistance_gene_report.tsv
 ├── sample-01_NC_019152.1.snps.vcf
 ├── sample-01_NC_019152.1.sorted.bam
 ├── sample-01_NC_019152.1.sorted.bam.bai

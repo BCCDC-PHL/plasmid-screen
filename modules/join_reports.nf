@@ -2,8 +2,6 @@ process join_mob_typer_and_abricate_reports {
 
     tag { sample_id }
 
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_resistance_plasmids.tsv", mode: 'copy'
-
     executor 'local'
 
     input:
@@ -18,12 +16,28 @@ process join_mob_typer_and_abricate_reports {
       """
 }
 
+process select_resistance_chromosomes {
+
+    tag { sample_id }
+
+    executor 'local'
+
+    input:
+      tuple val(sample_id),  path(resistance_gene_report)
+
+    output:
+      tuple val(sample_id), path("${sample_id}_resistance_chromosomes.tsv")
+
+    script:
+      """
+      head -n 1 ${resistance_gene_report} > ${sample_id}_resistance_chromosomes.tsv
+      awk -F \$'\\t' '\$2 ~ "chromosome"' ${resistance_gene_report} >> ${sample_id}_resistance_chromosomes.tsv
+      """
+}
 
 process join_resistance_plasmid_and_snp_reports {
 
     tag { sample_id + " / " + plasmid_id }
-
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}_resistance_plasmids.tsv", mode: 'copy'
 
     executor 'local'
 
@@ -36,5 +50,26 @@ process join_resistance_plasmid_and_snp_reports {
     script:
       """
       join_resistance_plasmid_and_snp_reports.py --sample-id ${sample_id} --resistance-plasmid-report ${resistance_plasmid_report} --snp-report ${snp_report} --coverage-report ${coverage_report} > ${sample_id}_${plasmid_id}_resistance_plasmids.tsv
+      """
+}
+
+process concatenate_resistance_reports {
+
+    tag { sample_id }
+
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_resistance_gene_report.tsv", mode: 'copy'
+
+    executor 'local'
+
+    input:
+      tuple val(sample_id),  path(resistance_reports)
+
+    output:
+      tuple val(sample_id), path("${sample_id}_resistance_gene_report.tsv")
+
+    script:
+      """
+      head -n 1 ${resistance_reports[0]} > ${sample_id}_resistance_gene_report.tsv
+      tail -qn+2 ${resistance_reports} >> ${sample_id}_resistance_gene_report.tsv
       """
 }
