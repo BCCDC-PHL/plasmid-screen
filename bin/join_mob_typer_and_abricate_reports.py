@@ -160,7 +160,7 @@ def main(args):
                 "mob_suite_primary_cluster_id": "-",
                 "mob_suite_secondary_cluster_id": "-",
                 "mash_nearest_neighbor": "-",
-                "mash_neighbor_distance": "_",
+                "mash_neighbor_distance": "-",
                 "alignment_ref_plasmid": "-",
                 "depth_coverage_threshold": "-",
                 "percent_ref_plasmid_coverage_above_depth_threshold": "-",
