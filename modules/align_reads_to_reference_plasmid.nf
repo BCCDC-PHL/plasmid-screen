@@ -19,6 +19,7 @@ process align_reads_to_reference_plasmid {
       printf -- "- process_name: align_reads_to_reference_plasmid\\n" > ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
+      printf -- "    resistance_gene: ${resistance_gene}\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  tool_name: bwa\\n  tool_version: \$(bwa 2>&1 | grep 'Version' | cut -d ' ' -f 2)\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  subcommand: mem\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
@@ -29,6 +30,7 @@ process align_reads_to_reference_plasmid {
       printf -- "- process_name: align_reads_to_reference_plasmid\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  process_tags:\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "    ref_plasmid_id: ${plasmid_id}\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
+      printf -- "    resistance_gene: ${resistance_gene}\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  tool_name: samtools\\n  tool_version: \$(samtools --version | grep 'samtools' | cut -d ' ' -f 2)\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  subcommand: view\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
       printf -- "  parameters:\\n" >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
