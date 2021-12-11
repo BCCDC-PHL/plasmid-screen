@@ -160,6 +160,7 @@ Example provenance output:
 - process_name: align_reads_to_reference_plasmid
   process_tags:
     ref_plasmid_id: NC_019152.1
+    resistance_gene: blaKPC-3
   tool_name: bwa
   subcommand: mem
   tool_version: 0.7.17-r1188
@@ -169,6 +170,7 @@ Example provenance output:
 - process_name: align_reads_to_reference_plasmid
   process_tags:
     ref_plasmid_id: NC_019152.1
+    resistance_gene: blaKPC-3
   tool_name: samtools
   subcommand: view
   tool_version: 1.13
@@ -178,6 +180,7 @@ Example provenance output:
 - process_name: call_snps
   process_tags:
     ref_plasmid_id: NC_019152.1
+    resistance_gene: blaKPC-3
   tool_name: freebayes
   tool_version: 1.3.5
   parameters:
@@ -196,6 +199,7 @@ Example provenance output:
 - process_name: call_snps
   process_tags:
     ref_plasmid_id: NC_019152.1
+    resistance_gene: blaKPC-3
   tool_name: bcftools
   subcommand: view
   tool_version: 1.12
