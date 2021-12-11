@@ -71,6 +71,7 @@ def main(args):
         "sample_id",
         "assembly_file",
         "reference_plasmid_id",
+        "resistance_gene",
         "mash_neighbor_distance",
     ]
     
@@ -81,6 +82,7 @@ def main(args):
         output_record = { 'sample_id': input_record['sample_id'],
                           'assembly_file': input_record['assembly_file'],
                           'reference_plasmid_id': input_record['mash_nearest_neighbor'],
+                          'resistance_gene': input_record['resistance_gene'],
                           'mash_neighbor_distance': input_record['mash_neighbor_distance']}
                   
         writer.writerow(output_record)

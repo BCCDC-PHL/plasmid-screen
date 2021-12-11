@@ -37,19 +37,19 @@ process select_resistance_chromosomes {
 
 process join_resistance_plasmid_and_snp_reports {
 
-    tag { sample_id + " / " + plasmid_id }
+    tag { sample_id + " / " + plasmid_id + " / " + resistance_gene }
 
     executor 'local'
 
     input:
-      tuple val(sample_id), path(resistance_plasmid_report), val(plasmid_id), path(snp_report), path(coverage_report)
+      tuple val(sample_id), path(resistance_plasmid_report), val(plasmid_id), val(resistance_gene), path(snp_report), path(coverage_report)
 
     output:
-      tuple val(sample_id), path("${sample_id}_${plasmid_id}_resistance_plasmids.tsv")
+      tuple val(sample_id), path("${sample_id}_${plasmid_id}_${resistance_gene}_resistance_plasmids.tsv")
 
     script:
       """
-      join_resistance_plasmid_and_snp_reports.py --sample-id ${sample_id} --resistance-plasmid-report ${resistance_plasmid_report} --snp-report ${snp_report} --coverage-report ${coverage_report} > ${sample_id}_${plasmid_id}_resistance_plasmids.tsv
+      join_resistance_plasmid_and_snp_reports.py --sample-id ${sample_id} --resistance-plasmid-report ${resistance_plasmid_report} --snp-report ${snp_report} --coverage-report ${coverage_report} > ${sample_id}_${plasmid_id}_${resistance_gene}_resistance_plasmids.tsv
       """
 }
 
