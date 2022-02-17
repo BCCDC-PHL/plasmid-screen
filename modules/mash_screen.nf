@@ -2,7 +2,7 @@ process mash_screen {
 
     tag { sample_id }
 
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_mash_screen.tsv", mode: 'copy'
+    publishDir params.versioned_outdir ? "${params.outdir}/${sample_id}/${params.pipeline_short_name}-v${params.pipeline_minor_version}-output" : "${params.outdir}/${sample_id}", pattern: "${sample_id}_mash_screen.tsv", mode: 'copy'
 
     input:
       tuple val(sample_id), path(reads_r1), path(reads_r2), path(mob_db)

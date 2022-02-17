@@ -2,7 +2,7 @@ process mob_recon {
 
     tag { sample_id }
 
-    publishDir "${params.outdir}/${sample_id}", mode: 'copy', pattern: "${sample_id}*.{fasta,tsv}"
+    publishDir params.versioned_outdir ? "${params.outdir}/${sample_id}/${params.pipeline_short_name}-v${params.pipeline_minor_version}-output" : "${params.outdir}/${sample_id}", mode: 'copy', pattern: "${sample_id}*.{fasta,tsv}"
  
     input:
       tuple val(sample_id), path(assembly)
