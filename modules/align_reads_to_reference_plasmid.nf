@@ -2,8 +2,8 @@ process align_reads_to_reference_plasmid {
 
     tag { sample_id + " / " + plasmid_id + " / " + resistance_gene }
 
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}.sorted{.bam,.bam.bai}", mode: 'copy'
-    publishDir "${params.outdir}/${sample_id}", pattern: "${reference_plasmid}", mode: 'copy'
+    publishDir params.versioned_outdir ? "${params.outdir}/${sample_id}/${params.pipeline_short_name}-v${params.pipeline_minor_version}-output" : "${params.outdir}/${sample_id}", pattern: "${sample_id}_${plasmid_id}.sorted{.bam,.bam.bai}", mode: 'copy'
+    publishDir params.versioned_outdir ? "${params.outdir}/${sample_id}/${params.pipeline_short_name}-v${params.pipeline_minor_version}-output" : "${params.outdir}/${sample_id}", pattern: "${reference_plasmid}", mode: 'copy'
 
     input:
       tuple val(sample_id), path(reads_r1), path(reads_r2), val(plasmid_id), val(resistance_gene), path(reference_plasmid)

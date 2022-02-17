@@ -28,7 +28,7 @@ process fastp_json_to_csv {
 
   executor 'local'
 
-  publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_fastp.csv", mode: 'copy'
+  publishDir params.versioned_outdir ? "${params.outdir}/${sample_id}/${params.pipeline_short_name}-v${params.pipeline_minor_version}-output" : "${params.outdir}/${sample_id}", pattern: "${sample_id}_fastp.csv", mode: 'copy'
 
   input:
   tuple val(sample_id), path(fastp_json)
