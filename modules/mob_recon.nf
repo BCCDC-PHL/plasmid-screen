@@ -9,7 +9,7 @@ process mob_recon {
 
     output:
       tuple val(sample_id), path("${sample_id}*.fasta"), emit: sequences
-      tuple val(sample_id), path("${sample_id}_mobtyper_plasmid_report.tsv"), emit: mobtyper_reports
+      tuple val(sample_id), path("${sample_id}_mobtyper_plasmid_report.tsv"), emit: mobtyper_reports, optional: true
       tuple val(sample_id), path("${sample_id}_mobtyper_contig_report.tsv"), emit: contig_reports
       tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
       
