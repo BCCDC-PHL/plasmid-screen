@@ -130,6 +130,7 @@ Example provenance output:
 - process_name: mob_recon
   tool_name: mob_recon
   tool_version: 3.0.3
+  parameters:
   - parameter: database_directory
     value: /path/to/mob_db
   - parameter: filter_db
