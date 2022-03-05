@@ -5,14 +5,17 @@ process join_mob_typer_and_abricate_reports {
     executor 'local'
 
     input:
-      tuple val(sample_id),  path(mob_typer_report), path(abricate_report)
+      tuple val(sample_id),  path(mob_typer_plasmid_report), path(mob_typer_contig_report), path(abricate_report)
 
     output:
       tuple val(sample_id), path("${sample_id}_resistance_plasmids.tsv")
 
     script:
       """
-      join_mob_typer_and_abricate_reports.py --sample-id ${sample_id} --mob-typer-report ${mob_typer_report} --abricate-report ${abricate_report} > ${sample_id}_resistance_plasmids.tsv
+      join_mob_typer_and_abricate_reports.py --sample-id ${sample_id} \
+        --mob-typer-plasmid-report ${mob_typer_plasmid_report} \
+        --mob-typer-contig-report ${mob_typer_contig_report} \
+        --abricate-report ${abricate_report} > ${sample_id}_resistance_plasmids.tsv
       """
 }
 

@@ -13,14 +13,15 @@ def parse_resistance_plasmid_report(resistance_plasmid_report_path):
     fieldnames = [
         "sample_id",
         "assembly_file",
-        "resistance_gene_contig",
-        "num_contigs_in_reconstruction",
-        "reconstruction_size",
-        "resistance_gene",
-        "gene_start",
-        "gene_end",
+        "resistance_gene_contig_id",
+        "resistance_gene_contig_size",
+        "resistance_gene_id",
+        "resistance_gene_contig_position_start",
+        "resistance_gene_contig_position_end",
         "percent_resistance_gene_coverage",
         "percent_resistance_gene_identity",
+        "num_contigs_in_plasmid_reconstruction",
+        "plasmid_reconstruction_size",
         "replicon_types",
         "mob_suite_primary_cluster_id",
         "mob_suite_secondary_cluster_id",
@@ -33,10 +34,10 @@ def parse_resistance_plasmid_report(resistance_plasmid_report_path):
     ]
 
     int_fields = [
-        "num_contigs_in_reconstruction",
-        "reconstruction_size",
-        "gene_start",
-        "gene_end",
+        "num_contigs_in_plasmid_reconstruction",
+        "plasmid_reconstruction_size",
+        "resistance_gene_contig_position_start",
+        "resistance_gene_contig_position_end",
     ]
 
     float_fields = [
@@ -129,14 +130,15 @@ def main(args):
     output_fieldnames = [
         "sample_id",
         "assembly_file",
-        "resistance_gene_contig",
-        "num_contigs_in_reconstruction",
-        "reconstruction_size",
-        "resistance_gene",
-        "gene_start",
-        "gene_end",
+        "resistance_gene_contig_id",
+        "resistance_gene_contig_size",
+        "resistance_gene_id",
+        "resistance_gene_contig_position_start",
+        "resistance_gene_contig_position_end",
         "percent_resistance_gene_coverage",
         "percent_resistance_gene_identity",
+        "num_contigs_in_plasmid_reconstruction",
+        "plasmid_reconstruction_size",
         "replicon_types",
         "mob_suite_primary_cluster_id",
         "mob_suite_secondary_cluster_id",
