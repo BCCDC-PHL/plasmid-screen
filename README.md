@@ -65,7 +65,7 @@ sample-01
         ├── sample-01_fastp.csv
         ├── sample-01_mash_screen.tsv
         ├── ...
-	├── sample-01_quast.csv
+        ├── sample-01_quast.csv
         └── NC_019152.1.fa
 ```
 
