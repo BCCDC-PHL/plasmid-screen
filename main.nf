@@ -75,13 +75,13 @@ workflow {
 
     abricate(ch_mob_recon_sequences)
 
-    ch_join_reports_input = mob_recon.out.mobtyper_reports.cross(abricate.out.report).map{ it -> [it[0][0], it[0][1], it[1][1]] }
+    ch_join_reports_input = mob_recon.out.mobtyper_reports.cross(abricate.out.report).map{ it -> [it[0][0], it[0][1], it[0][2], it[1][1]] }
 
     ch_combined_abricate_mobtyper_report = join_mob_typer_and_abricate_reports(ch_join_reports_input)
 
     select_resistance_chromosomes(ch_combined_abricate_mobtyper_report)
     
-    ch_reference_plasmid_id = choose_reference_plasmids(ch_combined_abricate_mobtyper_report).map{ it -> file(it).text }.splitCsv(header: true).map{ it -> [it.sample_id, it.reference_plasmid_id, it.resistance_gene] }
+    ch_reference_plasmid_id = choose_reference_plasmids(ch_combined_abricate_mobtyper_report).map{ it -> file(it).text }.splitCsv(header: true).map{ it -> [it.sample_id, it.reference_plasmid_id, it.resistance_gene_id] }
   
     ch_reference_plasmid = get_reference_plasmid(ch_reference_plasmid_id.combine(ch_mob_db))
 

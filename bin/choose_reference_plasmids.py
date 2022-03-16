@@ -12,14 +12,15 @@ def parse_combined_abricate_mobtyper_report(combined_abricate_mobtyper_report_pa
     fieldnames = [
         "sample_id",
         "assembly_file",
-        "resistance_gene_contig",
-        "num_contigs_in_reconstruction",
-        "reconstruction_size",
-        "resistance_gene",
-        "gene_start",
-        "gene_end",
+        "resistance_gene_contig_id",
+        "resistance_gene_contig_size",
+        "resistance_gene_id",
+        "resistance_gene_contig_position_start",
+        "resistance_gene_contig_position_end",
         "percent_resistance_gene_coverage",
         "percent_resistance_gene_identity",
+        "num_contigs_in_plasmid_reconstruction",
+        "plasmid_reconstruction_size",
         "replicon_types",
         "mob_suite_primary_cluster_id",
         "mob_suite_secondary_cluster_id",
@@ -30,10 +31,11 @@ def parse_combined_abricate_mobtyper_report(combined_abricate_mobtyper_report_pa
     ]
 
     int_fields = [
-        "num_contigs",
-        "size",
-        "gene_start",
-        "gene_end",
+        "resistance_gene_contig_size",
+        "resistance_gene_contig_position_start",
+        "resistance_gene_contig_position_start",
+        "num_contigs_in_plasmid_reconstruction",
+        "plasmid_reconstruction_size",
     ]
 
     float_fields = [
@@ -71,7 +73,7 @@ def main(args):
         "sample_id",
         "assembly_file",
         "reference_plasmid_id",
-        "resistance_gene",
+        "resistance_gene_id",
         "mash_neighbor_distance",
     ]
     
@@ -82,7 +84,7 @@ def main(args):
         output_record = { 'sample_id': input_record['sample_id'],
                           'assembly_file': input_record['assembly_file'],
                           'reference_plasmid_id': input_record['mash_nearest_neighbor'],
-                          'resistance_gene': input_record['resistance_gene'],
+                          'resistance_gene_id': input_record['resistance_gene_id'],
                           'mash_neighbor_distance': input_record['mash_neighbor_distance']}
                   
         writer.writerow(output_record)

@@ -55,6 +55,20 @@ nextflow run BCCDC-PHL/plasmid-screen \
   --outdir </path/to/outdir> 
 ```
 
+If the `--versioned_outdir` flag is used, then a sub-directory will be created below each sample, named with the pipeline name and minor version:
+
+```
+sample-01
+    └── plasmid-screen-v0.2-output
+        ├── sample-01_abricate.tsv
+        ├── sample-01_chromosome.fasta
+        ├── sample-01_fastp.csv
+        ├── sample-01_mash_screen.tsv
+        ├── ...
+        ├── sample-01_quast.csv
+        └── NC_019152.1.fa
+```
+
 ## Outputs
 
 The main output of the pipeline is the 'Resistance gene report', which summarizes where the resistance gene was located (contig and position), the quality of the resitance gene match (% identity and
@@ -63,14 +77,15 @@ The main output of the pipeline is the 'Resistance gene report', which summarize
 ```
 sample_id
 assembly_file
-resistance_gene_contig
-num_contigs_in_reconstruction
-reconstruction_size
-resistance_gene
-gene_start
-gene_end
+resistance_gene_contig_id
+resistance_gene_contig_size
+resistance_gene_id
+resistance_gene_contig_position_start
+resistance_gene_contig_position_end
 percent_resistance_gene_coverage
 percent_resistance_gene_identity
+num_contigs_in_plasmid_reconstruction
+plasmid_reconstruction_size
 replicon_types
 mob_suite_primary_cluster_id
 mob_suite_secondary_cluster_id
