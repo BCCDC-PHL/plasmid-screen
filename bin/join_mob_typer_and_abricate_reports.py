@@ -54,34 +54,34 @@ def parse_abricate_report(abricate_report_path):
 
 def parse_mob_typer_plasmid_report(mob_typer_plasmid_report_path):
     mob_typer_report = []
-    
+
     fieldnames = [
         "sample_id",
         "num_contigs",
-	"size",
-	"gc",
-	"md5",
-	"rep_types",
-	"rep_type_accessions",
-	"relaxase_types",
-	"relaxase_type_accessions",
-	"mpf_type",
-	"mpf_type_accessions",
-	"orit_types",
-	"orit_accessions",
-	"predicted_mobility",
-	"mash_nearest_neighbor",
-	"mash_neighbor_distance",
-	"mash_neighbor_identification",
-	"primary_cluster_id",
-	"secondary_cluster_id",
-	"predicted_host_range_overall_rank",
-	"predicted_host_range_overall_name",
-	"observed_host_range_ncbi_rank",
-	"observed_host_range_ncbi_name",
-	"reported_host_range_lit_rank",
-	"reported_host_range_lit_name",
-	"associated_pmids",
+        "size",
+        "gc",
+        "md5",
+        "rep_types",
+        "rep_type_accessions",
+        "relaxase_types",
+        "relaxase_type_accessions",
+        "mpf_type",
+        "mpf_type_accessions",
+        "orit_types",
+        "orit_accessions",
+        "predicted_mobility",
+        "mash_nearest_neighbor",
+        "mash_neighbor_distance",
+        "mash_neighbor_identification",
+        "primary_cluster_id",
+        "secondary_cluster_id",
+        "predicted_host_range_overall_rank",
+        "predicted_host_range_overall_name",
+        "observed_host_range_ncbi_rank",
+        "observed_host_range_ncbi_name",
+        "reported_host_range_lit_rank",
+        "reported_host_range_lit_name",
+        "associated_pmids",
     ]
 
     int_fields = [
@@ -110,32 +110,32 @@ def parse_mob_typer_plasmid_report(mob_typer_plasmid_report_path):
 
 def parse_mob_typer_contig_report(mob_typer_contig_report_path):
     mob_typer_report = []
-    
+
     fieldnames = [
         "sample_id",
         "molecule_type",
-	"primary_cluster_id",
-	"secondary_cluster_id",
-	"contig_id",
-	"contig_size",
-	"gc_percent",
-	"md5",
-	"circularity_status",
-	"rep_types",
-	"rep_type_accessions",
-	"relaxase_types",
-	"relaxase_type_accessions",
-	"mpf_types",
-	"mpf_type_accessions",
-	"orit_types",
-	"orit_type_accessions",
-	"predicted_mobility",
-	"mash_nearest_neighbor",
-	"mash_neighbor_distance",
-	"mash_neighbor_identification",
-	"repetitive_dna_id",
-	"repetitive_dna_type",
-	"filtering_reason",
+        "primary_cluster_id",
+        "secondary_cluster_id",
+        "contig_id",
+        "contig_size",
+        "gc_percent",
+        "md5",
+        "circularity_status",
+        "rep_types",
+        "rep_type_accessions",
+        "relaxase_types",
+        "relaxase_type_accessions",
+        "mpf_types",
+        "mpf_type_accessions",
+        "orit_types",
+        "orit_type_accessions",
+        "predicted_mobility",
+        "mash_nearest_neighbor",
+        "mash_neighbor_distance",
+        "mash_neighbor_identification",
+        "repetitive_dna_id",
+        "repetitive_dna_type",
+        "filtering_reason",
     ]
 
     int_fields = [
@@ -203,7 +203,7 @@ def main(args):
                 if abricate_record['sequence'] == mob_typer_contig_id:
                     resistance_gene_contig_size = mob_typer_contig_record['contig_size']
             output_record = {
-                "sample_id": args.sample_id,  
+                "sample_id": args.sample_id,
                 "assembly_file": abricate_record["file"],
                 "resistance_gene_contig_id": abricate_record['sequence'],
                 "resistance_gene_contig_size": resistance_gene_contig_size,
@@ -234,7 +234,7 @@ def main(args):
                         if abricate_record['sequence'] == mob_typer_contig_id:
                             resistance_gene_contig_size = mob_typer_contig_record['contig_size']
                     output_record = {
-                        "sample_id": args.sample_id,  
+                        "sample_id": args.sample_id,
                         "assembly_file": abricate_record["file"],
                         "resistance_gene_contig_id": abricate_record['sequence'],
                         "resistance_gene_contig_size": resistance_gene_contig_size,
