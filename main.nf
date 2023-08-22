@@ -90,7 +90,7 @@ workflow {
     call_snps(align_reads_to_reference_plasmid.out.alignment)
 
     join_resistance_plasmid_and_snp_reports(ch_combined_abricate_mobtyper_report.cross(call_snps.out.num_snps.join(align_reads_to_reference_plasmid.out.coverage, by: [0, 1])).map{ it -> it[0] + it[1].drop(1) })
-    concatenate_resistance_reports(select_resistance_chromosomes.out.join(join_resistance_plasmid_and_snp_reports.out, remainder: true).groupTuple().map{ it -> [it[0], (it[1] - null) + (it[2] - null)] })
+    concatenate_resistance_reports(select_resistance_chromosomes.out.join(join_resistance_plasmid_and_snp_reports.out, remainder: true).groupTuple().map{ it -> [it[0], (it[1] - null) + (it[2] - null)]}.map{ it -> [it[0]] + [it[1].unique{ path -> path.getFileName() }] })
 
 
     ch_provenance = mob_recon.out.provenance
@@ -104,5 +104,6 @@ workflow {
     ch_provenance = ch_provenance.join(call_snps.out.provenance, remainder: true).map{ it -> it.collect{ x -> x ? x : [] }}.map{ it -> [it[0], it[1] << it[2]] }.groupTuple().map{ it -> [it[0], it[1].flatten()] }
     ch_provenance = ch_provenance.join(quast.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(ch_fastq.map{ it -> it[0] }.combine(ch_pipeline_provenance)).map{ it -> [it[0], it[1] << it[2]] }
+    ch_provenance = ch_provenance.map{ [it[0]] + [it[1].unique{ path -> path.getFileName() }] }
     collect_provenance(ch_provenance)
 }
