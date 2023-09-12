@@ -35,9 +35,12 @@ process mob_recon {
         --outdir ${sample_id} \
         --force
 
+      # fix fasta header to put whitespace after contig ID.
+      # BC23A123A_1_depth=10.0x_circular=true -> BC23A123A_1 depth=10.0x_circular=true
+      # BC23A123A_contig0001_depth=10.0x_circular=true -> BC23A123A_contig0001 depth=10.0x_circular=true
       for assembly in ${sample_id}/*.fasta;
       do
-        sed -i -r 's/^>${sample_id}_([[:digit:]]+)_(.+)/>${sample_id}_\\1 \\2/' \${assembly};
+        sed -i -r 's/^>${sample_id}_((contig)?[[:digit:]]+)_(.+)/>${sample_id}_\\1 \\3/' \${assembly};
       done
       rename plasmid ${sample_id}_plasmid ${sample_id}/plasmid*.fasta || true
       cp ${sample_id}/${sample_id}_plasmid*.fasta . || true
