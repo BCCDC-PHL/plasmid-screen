@@ -11,7 +11,8 @@ include { mash_screen }                             from './modules/mash_screen.
 include { quast }                                   from './modules/quast.nf'
 include { parse_quast_report }                      from './modules/quast.nf'
 include { mob_recon }                               from './modules/mob_recon.nf'
-include { abricate }                                from './modules/abricate.nf'
+include { abricate as abricate_ncbi }               from './modules/abricate.nf'
+include { abricate as abricate_plasmidfinder }      from './modules/abricate.nf'
 include { join_mob_typer_and_abricate_reports }     from './modules/join_reports.nf'
 include { select_resistance_chromosomes }           from './modules/join_reports.nf'
 include { select_resistance_contigs }               from './modules/select_resistance_contigs.nf'
@@ -79,9 +80,11 @@ workflow {
     // pass reconstructed plasmids as [sample_id, [seq1, seq2, seq3...]]
     ch_mob_recon_sequences = mob_recon.out.sequences.map{ it -> [it[0], it[1..-1][0]] }
 
-    abricate(ch_mob_recon_sequences)
+    abricate_ncbi(ch_mob_recon_sequences.combine(Channel.of("ncbi")))
 
-    ch_join_reports_input = mob_recon.out.mobtyper_reports.cross(abricate.out.report).map{ it -> [it[0][0], it[0][1], it[0][2], it[1][1]] }
+    abricate_plasmidfinder(ch_mob_recon_sequences.combine(Channel.of("plasmidfinder")))
+
+    ch_join_reports_input = mob_recon.out.mobtyper_reports.cross(abricate_ncbi.out.report).map{ it -> [it[0][0], it[0][1], it[0][2], it[1][1]] }
 
     ch_combined_abricate_mobtyper_report = join_mob_typer_and_abricate_reports(ch_join_reports_input)
 
@@ -115,7 +118,8 @@ workflow {
     ch_provenance = ch_provenance.join(quast.out.provenance).map{ it ->            [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(mash_screen.out.provenance).map{ it ->      [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(mob_recon.out.provenance).map{ it ->        [it[0], it[1] << it[2]] }
-    ch_provenance = ch_provenance.join(abricate.out.provenance).map{ it ->         [it[0], it[1] << it[2]] }
+    ch_provenance = ch_provenance.join(abricate_ncbi.out.provenance).map{ it ->    [it[0], it[1] << it[2]] }
+    ch_provenance = ch_provenance.join(abricate_plasmidfinder.out.provenance).map{ it -> [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(align_reads_to_reference_plasmid.out.provenance, remainder: true).map{ it -> it.collect{ x -> x ? x : [] }}.map{ it -> [it[0], it[1] << it[2]] }.groupTuple().map{ it -> [it[0], it[1].flatten()] }
     ch_provenance = ch_provenance.join(call_snps.out.provenance, remainder: true).map{ it -> it.collect{ x -> x ? x : [] }}.map{ it -> [it[0], it[1] << it[2]] }.groupTuple().map{ it -> [it[0], it[1].flatten()] }
     ch_provenance = ch_provenance.map{ [it[0]] + [it[1].unique{ path -> path.getFileName() }] }

@@ -1,18 +1,17 @@
 process abricate {
 
-    tag { sample_id }
+    tag { sample_id + ' / ' + db }
 
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_abricate.tsv", mode: 'copy'
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_abricate_${db}.tsv", mode: 'copy'
 
     input:
-    tuple val(sample_id),  path(assemblies)
+    tuple val(sample_id),  path(assemblies), val(db)
 
     output:
-    tuple val(sample_id), path("${sample_id}_abricate.tsv"), emit: report
+    tuple val(sample_id), path("${sample_id}_abricate_${db}.tsv"), emit: report
     tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
 
     script:
-    db = "ncbi"
     """
     printf -- "- process_name: abricate\\n"  >> ${sample_id}_abricate_provenance.yml
     printf -- "  tools:\\n"                  >> ${sample_id}_abricate_provenance.yml
@@ -26,6 +25,6 @@ process abricate {
 	--threads ${task.cpus} \
 	--db ${db} \
 	--nopath \
-	${assemblies} > ${sample_id}_abricate.tsv
+	${assemblies} > ${sample_id}_abricate_${db}.tsv
     """
 }
