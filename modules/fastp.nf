@@ -1,6 +1,8 @@
-process trim_reads {
+process fastp {
 
     tag { sample_id }
+
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_fastp.{json,csv}", mode: 'copy'
 
     input:
     tuple val(sample_id), path(reads_1), path(reads_2)
@@ -8,6 +10,7 @@ process trim_reads {
     output:
     tuple val(sample_id), path("${sample_id}_trimmed_R1.fastq.gz"), path("${sample_id}_trimmed_R2.fastq.gz"), emit: reads
     tuple val(sample_id), path("${sample_id}_fastp.json"), emit: json
+    tuple val(sample_id), path("${sample_id}_fastp.csv"), emit: csv
     tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
 
     script:
@@ -31,25 +34,7 @@ process trim_reads {
 	--unpaired2 ${sample_id}_unpaired.fastq.gz
 
     mv fastp.json ${sample_id}_fastp.json
-    """
-}
 
-process fastp_json_to_csv {
-
-    tag { sample_id }
-
-    executor 'local'
-
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_fastp.csv", mode: 'copy'
-
-    input:
-    tuple val(sample_id), path(fastp_json)
-
-    output:
-    tuple val(sample_id), path("${sample_id}_fastp.csv")
-
-    script:
-    """
-    fastp_json_to_csv.py -s ${sample_id} ${fastp_json} > ${sample_id}_fastp.csv
+    fastp_json_to_csv.py -s ${sample_id} ${sample_id}_fastp.json > ${sample_id}_fastp.csv
     """
 }

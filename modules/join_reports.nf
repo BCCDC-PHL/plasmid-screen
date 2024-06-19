@@ -72,7 +72,9 @@ process concatenate_resistance_reports {
 
     script:
     """
-    head -n 1 ${resistance_reports[0]} > ${sample_id}_resistance_gene_report.tsv
-    tail -qn+2 ${resistance_reports} >> ${sample_id}_resistance_gene_report.tsv
+    # tr -d '\015' removes carriage return characters, which can cause issues when concatenating files
+
+    head -n 1 ${resistance_reports[0]} | tr -d '\015' >> ${sample_id}_resistance_gene_report.tsv
+    tail -qn+2 ${resistance_reports}   | tr -d '\015' >> ${sample_id}_resistance_gene_report.tsv
     """
 }

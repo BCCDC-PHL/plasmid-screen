@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
 import argparse
+import csv
 import json
+import sys
 
 def main(args):
     with open(args.fastp_json, 'r') as f:
@@ -57,7 +59,6 @@ def main(args):
         output_fields = ['sample_id'] + output_fields
         output_data = [args.sample_id]
 
-    print(",".join(output_fields))
     output_data = output_data + [
         total_reads_before_filtering,
         total_reads_after_filtering,
@@ -80,7 +81,11 @@ def main(args):
         adapter_trimmed_reads,
         adapter_trimmed_bases,
     ]
-    print(",".join(map(str, output_data)))
+    output_row = dict(zip(output_fields, output_data))
+    writer = csv.DictWriter(sys.stdout, fieldnames=output_fields, dialect='unix', quoting=csv.QUOTE_MINIMAL, extrasaction='ignore')
+    writer.writeheader()
+    writer.writerow(output_row)
+    
 
 
 if __name__ == "__main__":
