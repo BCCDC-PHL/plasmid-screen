@@ -8,7 +8,7 @@ nextflow run main.nf \
 	 -profile conda \
 	 --cache ${HOME}/.conda/envs \
 	 --fastq_input .github/data/fastq \
-	 --mob_db .github/data/mob-suite-db \
+	 --mob_db ${PWD}/.github/data/mob-suite-db \
 	 --prokka \
 	 --collect_outputs \
 	 --collected_outputs_prefix test \
