@@ -2,14 +2,20 @@
 
 set -eo pipefail
 
-sed -i 's/cpus = 16/cpus = 4/g' nextflow.config 
+if [ -n "${GITHUB_ACTIONS}" ]; then
+    echo "Running in GitHub Actions Environment"
+    echo "Adjusting nextflow.config"
+    sed -i 's/cpus = 16/cpus = 4/g' nextflow.config 
+else
+    echo "Not running in GitHub Actions Environment"
+fi
 
 nextflow run main.nf \
 	 -profile conda \
 	 --cache ${HOME}/.conda/envs \
-	 --fastq_input .github/data/fastq \
+	 --samplesheet_input .github/data/samplesheet.csv \
+	 --pre_assembled \
 	 --mob_db ${PWD}/.github/data/mob-suite-db \
-	 --prokka \
 	 --collect_outputs \
 	 --collected_outputs_prefix test \
 	 --outdir .github/data/test_output \

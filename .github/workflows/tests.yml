@@ -33,6 +33,8 @@ jobs:
       run: bash .github/scripts/simulate_reads.sh
     - name: Download mob-suite db
       run: bash .github/scripts/download_mob-suite_db.sh
+    - name: Create SampleSheet
+      run: bash .github/scripts/create_samplesheet.sh
     - name: Run Pipeline
       run: bash .github/scripts/run_pipeline.sh
     - name: Create Output Checking Environment
