@@ -4,12 +4,10 @@ nextflow.enable.dsl = 2
 
 include { hash_files as hash_files_fastq }          from './modules/hash_files.nf'
 include { hash_files as hash_files_assemblies }     from './modules/hash_files.nf'
-include { trim_reads }                              from './modules/fastp.nf'
-include { fastp_json_to_csv }                       from './modules/fastp.nf'
+include { fastp }                                   from './modules/fastp.nf'
 include { unicycler }                               from './modules/unicycler.nf'
 include { mash_screen }                             from './modules/mash_screen.nf'
 include { quast }                                   from './modules/quast.nf'
-include { parse_quast_report }                      from './modules/quast.nf'
 include { mob_recon }                               from './modules/mob_recon.nf'
 include { abricate as abricate_ncbi }               from './modules/abricate.nf'
 include { abricate as abricate_plasmidfinder }      from './modules/abricate.nf'
@@ -53,9 +51,7 @@ workflow {
 
     hash_files_fastq(ch_fastq.map{ it -> [it[0], [it[1], it[2]]] }.combine(Channel.of("fastq_input")))
 
-    trim_reads(ch_fastq)
-
-    fastp_json_to_csv(trim_reads.out.json)
+    fastp(ch_fastq)
 
     if (params.pre_assembled) {
 	if (params.samplesheet_input != 'NO_FILE') {
@@ -65,15 +61,13 @@ workflow {
 	}
 	hash_files_assemblies(ch_assemblies.map{ it -> [it[0], [it[1]]] }.combine(Channel.of("assembly_input")))
     } else {
-	unicycler(trim_reads.out.reads)
+	unicycler(fastp.out.reads)
 	ch_assemblies = unicycler.out.assembly
     }
 
     quast(ch_assemblies)
 
-    parse_quast_report(quast.out.report)
-
-    mash_screen(trim_reads.out.reads.combine(ch_mob_db))
+    mash_screen(fastp.out.reads.combine(ch_mob_db))
 
     ch_mob_recon = mob_recon(ch_assemblies)
 
@@ -94,12 +88,33 @@ workflow {
   
     ch_reference_plasmid = get_reference_plasmid(ch_reference_plasmid_id.combine(ch_mob_db))
 
-    align_reads_to_reference_plasmid(trim_reads.out.reads.cross(ch_reference_plasmid).map{ it -> it[0] + it[1].drop(1) })
+    align_reads_to_reference_plasmid(fastp.out.reads.cross(ch_reference_plasmid).map{ it -> it[0] + it[1].drop(1) })
 
     call_snps(align_reads_to_reference_plasmid.out.alignment)
 
     join_resistance_plasmid_and_snp_reports(ch_combined_abricate_mobtyper_report.cross(call_snps.out.num_snps.join(align_reads_to_reference_plasmid.out.coverage, by: [0, 1])).map{ it -> it[0] + it[1].drop(1) })
     concatenate_resistance_reports(select_resistance_chromosomes.out.join(join_resistance_plasmid_and_snp_reports.out, remainder: true).groupTuple().map{ it -> [it[0], (it[1] - null) + (it[2] - null)]}.map{ it -> [it[0]] + [it[1].unique{ path -> path.getFileName() }] })
+
+    if (params.collect_outputs) {
+	fastp.out.csv.map{ it -> it[1] }.collectFile(
+	    name: params.collected_outputs_prefix + "_fastp.csv",
+	    storeDir: params.outdir,
+	    keepHeader: true,
+	    sort: true,
+	)
+	quast.out.csv.map{ it -> it[1] }.collectFile(
+	    name: params.collected_outputs_prefix + "_quast.csv",
+	    storeDir: params.outdir,
+	    keepHeader: true,
+	    sort: true,
+	)
+	concatenate_resistance_reports.out.map{ it -> it[1] }.collectFile(
+	    name: params.collected_outputs_prefix + "_resistance_gene_report.tsv",
+	    storeDir: params.outdir,
+	    keepHeader: true,
+	    sort: true,
+	)
+    }
 
 
     //
@@ -114,7 +129,7 @@ workflow {
     } else {
 	ch_provenance = ch_provenance.join(unicycler.out.provenance).map{ it ->    [it[0], it[1] << it[2]] }
     }
-    ch_provenance = ch_provenance.join(trim_reads.out.provenance).map{ it ->       [it[0], it[1] << it[2]] }
+    ch_provenance = ch_provenance.join(fastp.out.provenance).map{ it ->            [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(quast.out.provenance).map{ it ->            [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(mash_screen.out.provenance).map{ it ->      [it[0], it[1] << it[2]] }
     ch_provenance = ch_provenance.join(mob_recon.out.provenance).map{ it ->        [it[0], it[1] << it[2]] }

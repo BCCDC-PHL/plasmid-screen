@@ -9,6 +9,15 @@ import sys
 
 def parse_transposed_quast_report(transposed_quast_report_path):
     """
+    Parse a transposed QUAST report file and return a list of dictionaries, one for each assembly.
+
+    :param transposed_quast_report_path: Path to the transposed QUAST report file.
+    :return: List of dictionaries, one for each assembly. Keys:
+             ['assembly_id', 'total_length', 'num_contigs', 'largest_contig', 'assembly_N50', 'assembly_N75',
+              'assembly_L50', 'assembly_L75', 'num_N_per_100_kb', 'num_contigs_gt_0_bp', 'num_contigs_gt_1000_bp',             'num_contigs_gt_5000_bp', 'num_contigs_gt_10000_bp', 'num_contigs_gt_25000_bp', 'num_contigs_gt_50000_bp',
+              'total_length_gt_0_bp', 'total_length_gt_1000_bp', 'total_length_gt_5000_bp', 'total_length_gt_10000_bp',
+              'total_length_gt_25000_bp', 'total_length_gt_50000_bp']
+    :rtype: list[dict]
     """
     field_lookup = collections.OrderedDict()
     field_lookup['Assembly'] = 'assembly_id'
@@ -118,7 +127,7 @@ def main():
     ]
 
     report = parse_transposed_quast_report(args.transposed_quast_report)
-    writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames)
+    writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames, dialect='unix', quoting=csv.QUOTE_MINIMAL, extrasaction='ignore')
     writer.writeheader()
     for record in report:
         writer.writerow(record)

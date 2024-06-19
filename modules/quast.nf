@@ -2,11 +2,13 @@ process quast {
 
     tag { sample_id }
 
+    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_quast.csv", mode: 'copy'
+
     input:
     tuple val(sample_id), path(assembly)
 
     output:
-    tuple val(sample_id), path("${sample_id}_quast.tsv"), emit: report
+    tuple val(sample_id), path("${sample_id}_quast.csv"), emit: csv
     tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
 
     script:
@@ -19,25 +21,7 @@ process quast {
     quast --threads ${task.cpus} ${assembly}
 
     cp quast_results/latest/transposed_report.tsv ${sample_id}_quast.tsv
-    """
-}
 
-process parse_quast_report {
-
-    tag { sample_id }
-
-    executor 'local'
-
-    publishDir "${params.outdir}/${sample_id}", pattern: "${sample_id}_quast.csv", mode: 'copy'
-
-    input:
-    tuple val(sample_id), path(quast_report)
-
-    output:
-    tuple val(sample_id), path("${sample_id}_quast.csv")
-
-    script:
-    """
-    parse_quast_report.py ${quast_report} > ${sample_id}_quast.csv
+    parse_quast_report.py ${sample_id}_quast.tsv > ${sample_id}_quast.csv
     """
 }

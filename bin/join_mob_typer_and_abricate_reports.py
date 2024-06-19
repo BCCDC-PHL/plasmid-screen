@@ -190,8 +190,9 @@ def main(args):
         "percent_ref_plasmid_coverage_above_depth_threshold",
         "num_snps_vs_ref_plasmid",
     ]
-    csv.register_dialect('unix-tab', delimiter='\t', doublequote=False, lineterminator='\n', quoting=csv.QUOTE_MINIMAL)
-    writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames, dialect='unix-tab')
+
+    writer = csv.DictWriter(sys.stdout, fieldnames=output_fieldnames, dialect='excel-tab', quoting=csv.QUOTE_MINIMAL, extrasaction='ignore')
+
     writer.writeheader()
 
 
