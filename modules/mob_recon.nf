@@ -20,7 +20,7 @@ process mob_recon {
     printf -- "  tools:\\n"                   >> ${sample_id}_mob_recon_provenance.yml
     printf -- "    - tool_name: mob_recon\\n" >> ${sample_id}_mob_recon_provenance.yml
     printf -- "      tool_version: \$(mob_recon --version | cut -d ' ' -f 2)\\n" >> ${sample_id}_mob_recon_provenance.yml
-    printf -- "      parameters\\n"           >> ${sample_id}_mob_recon_provenance.yml
+    printf -- "      parameters:\\n"           >> ${sample_id}_mob_recon_provenance.yml
     printf -- "        - parameter: database_directory\\n"               >> ${sample_id}_mob_recon_provenance.yml
     printf -- "          value: \$(realpath ${params.mob_db})\\n"        >> ${sample_id}_mob_recon_provenance.yml
     printf -- "        - parameter: filter_db\\n"                        >> ${sample_id}_mob_recon_provenance.yml
