@@ -163,7 +163,7 @@ Example provenance output:
     - tool_name: mash
       tool_version: 2.3
       parameters
-        - name: threshold
+        - parameter: threshold
           value: 0.996
 - process_name: mob_recon
   tools:
