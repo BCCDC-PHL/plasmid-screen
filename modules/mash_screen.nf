@@ -14,7 +14,7 @@ process mash_screen {
     script:
     """
     printf -- "- process_name: mash_screen\\n"                  >> ${sample_id}_mash_provenance.yml
-    printf -- "  tools\\n"                                      >> ${sample_id}_mash_provenance.yml
+    printf -- "  tools:\\n"                                      >> ${sample_id}_mash_provenance.yml
     printf -- "    - tool_name: mash\\n"                        >> ${sample_id}_mash_provenance.yml
     printf -- "      tool_version: \$(mash --version)\\n"       >> ${sample_id}_mash_provenance.yml
     printf -- "      parameters\\n"                             >> ${sample_id}_mash_provenance.yml
