@@ -18,7 +18,7 @@ process mash_screen {
     printf -- "    - tool_name: mash\\n"                        >> ${sample_id}_mash_provenance.yml
     printf -- "      tool_version: \$(mash --version)\\n"       >> ${sample_id}_mash_provenance.yml
     printf -- "      parameters:\\n"                             >> ${sample_id}_mash_provenance.yml
-    printf -- "        - name: threshold\\n"                    >> ${sample_id}_mash_provenance.yml
+    printf -- "        - parameter: threshold\\n"                    >> ${sample_id}_mash_provenance.yml
     printf -- "          value: ${params.mashthreshold}\\n"     >> ${sample_id}_mash_provenance.yml
 
     mash screen -p ${task.cpus} -i ${params.mashthreshold} ${mob_db}/ncbi_plasmid_full_seqs.fas.msh ${reads_r1} ${reads_r2} | \
