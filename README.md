@@ -1,3 +1,5 @@
+[![Tests](https://github.com/BCCDC-PHL/plasmid-screen/actions/workflows/tests.yml/badge.svg)](https://github.com/BCCDC-PHL/plasmid-screen/actions/workflows/tests.yml)
+
 # plasmid-screen
 
 ## Usage
@@ -157,7 +159,7 @@ Example provenance output:
     - tool_name: quast
       tool_version: 5.0.2
 - process_name: mash_screen
-  tools
+  tools:
     - tool_name: mash
       tool_version: 2.3
       parameters
