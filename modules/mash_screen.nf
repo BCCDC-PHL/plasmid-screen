@@ -17,7 +17,7 @@ process mash_screen {
     printf -- "  tools:\\n"                                      >> ${sample_id}_mash_provenance.yml
     printf -- "    - tool_name: mash\\n"                        >> ${sample_id}_mash_provenance.yml
     printf -- "      tool_version: \$(mash --version)\\n"       >> ${sample_id}_mash_provenance.yml
-    printf -- "      parameters\\n"                             >> ${sample_id}_mash_provenance.yml
+    printf -- "      parameters:\\n"                             >> ${sample_id}_mash_provenance.yml
     printf -- "        - name: threshold\\n"                    >> ${sample_id}_mash_provenance.yml
     printf -- "          value: ${params.mashthreshold}\\n"     >> ${sample_id}_mash_provenance.yml
 
