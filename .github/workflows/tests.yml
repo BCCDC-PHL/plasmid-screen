@@ -12,13 +12,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        nextflow_version: ["21.04.3", "23.10.1"]
+        nextflow_version: ["21.04.3", "24.10.6"]
     name: Run tests
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
     - name: Create Artifacts Directory
       run: mkdir artifacts
+    - name: Set up Java 8 for old Nextflow
+      if: matrix.nextflow_version == '21.04.3'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '8'
+    - name: Set up Java 17 for newer Nextflow
+      if: matrix.nextflow_version == '24.10.6'
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'temurin'
+        java-version: '17'
     - name: Install Miniconda
       run: bash .github/scripts/install_conda.sh
     - name: Install Nextflow
