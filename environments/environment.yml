@@ -2,7 +2,6 @@ name: plasmid-screen
 channels:
   - conda-forge
   - bioconda
-  - defaults
 dependencies:
   - python=3
   - biopython=1.74
