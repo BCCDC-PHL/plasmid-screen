@@ -35,3 +35,9 @@ jobs:
         run: |
           echo ${GITHUB_TOKEN} | apptainer registry login -u ${GHCR_USERNAME} --password-stdin oras://ghcr.io
           .github/scripts/push_container_images_wave.py --wave-jsons-dir wave_images --images-dir wave_images
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: artifacts-BCCDC-PHL-plasmid-screen-build-containers-${{ github.run_id }}.${{ github.run_attempt }}
+          path: artifacts
