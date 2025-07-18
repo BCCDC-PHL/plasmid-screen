@@ -1,6 +1,0 @@
-name: plasmid-screen-breseq
-channels:
-  - conda-forge
-  - bioconda
-dependencies:
-  - breseq=0.36.1
