@@ -1,0 +1,27 @@
+name: Build Container Images
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Wave CLI
+        run: |
+          .github/scripts/install_wave-cli.sh
+      - name: Check wave installation
+        run: wave --version
+      - name: Build images
+        run: |
+          .github/scripts/build_container_images_wave.sh
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: artifacts-BCCDC-PHL-plasmid-screen-build-containers-${{ github.run_id }}.${{ github.run_attempt }}
+          path: artifacts

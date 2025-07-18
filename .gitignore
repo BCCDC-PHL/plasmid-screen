@@ -1,4 +1,7 @@
+*~
 .nextflow*
+nextflow.log*
 work
 test_input
 test_output
+dev_scripts
