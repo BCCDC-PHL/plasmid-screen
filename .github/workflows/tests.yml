@@ -47,6 +47,8 @@ jobs:
       run: bash .github/scripts/download_assemblies.sh
     - name: Simulate Reads
       run: bash .github/scripts/simulate_reads.sh
+    - name: Create Mash & BLAST Environment
+      run: bash .github/scripts/create_mash_and_blast_environment.sh
     - name: Download mob-suite db
       run: bash .github/scripts/download_mob-suite_db.sh
     - name: Create SampleSheet

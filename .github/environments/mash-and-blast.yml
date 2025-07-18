@@ -1,6 +1,7 @@
-name: art
+name: mash-and-blast
 channels:
   - conda-forge
   - bioconda
 dependencies:
-  - art=2016.06.05
+  - mash=2.3
+  - blast=2.16.0

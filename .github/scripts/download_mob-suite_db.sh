@@ -18,7 +18,7 @@ rm data.tar.gz
 
 mv data mob-suite-db
 
-conda activate plasmid-screen-35d122a137231eda3b8a0039d42f24f6
+conda activate mash-and-blast
 
 mash sketch -i mob-suite-db/ncbi_plasmid_full_seqs.fas
 
