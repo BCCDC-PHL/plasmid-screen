@@ -15,6 +15,11 @@ rm ~/miniconda.sh
 
 echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
+if [ -n "${GITHUB_PATH:-}" ]; then
+  echo "/opt/miniconda3/bin" >> "$GITHUB_PATH"
+  echo "/opt/miniconda3/condabin" >> "$GITHUB_PATH"
+fi
+
 conda update -n base -c defaults conda
 
 conda install -y -c conda-forge mamba
