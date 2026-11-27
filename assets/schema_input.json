@@ -1,0 +1,63 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://raw.githubusercontent.com/BCCDC-PHL/plasmid-screen/master/assets/schema_input.json",
+    "title": "BCCDC-PHL/plasmid-screen pipeline - params.input schema",
+    "description": "Schema for the file provided with params.input",
+    "type": "array",
+    "items": {
+        "type": "object",
+        "properties": {
+            "sample": {
+                "type": "string",
+                "pattern": "^\\S+$",
+                "errorMessage": "Sample name must be provided and cannot contain spaces",
+                "meta": ["id"]
+            },
+            "fastq_1": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 1 must be provided, cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            },
+            "fastq_2": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for reads 2 cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            },
+            "assembly": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?a(\\.gz)?$",
+                "errorMessage": "Assembly file cannot contain spaces and must have extension '.fa', '.fasta' , '.fa.gz' or '.fasta.gz'"
+            },
+            "fastq_long": {
+                "type": "string",
+                "format": "file-path",
+                "exists": true,
+                "pattern": "^([\\S\\s]*\\/)?[^\\s\\/]+\\.f(ast)?q\\.gz$",
+                "errorMessage": "FastQ file for long reads cannot contain spaces and must have extension '.fq.gz' or '.fastq.gz'"
+            }
+            
+        },
+        "required": ["sample"],
+        "oneOf": [
+            {
+                "required": ["fastq_1", "fastq_2"],
+                "not": { "required": ["fastq_long"] }
+            },
+            {
+                "required": ["fastq_long", "assembly"],
+                "not": {
+                    "anyOf": [
+                        { "required": ["fastq_1"] },
+                        { "required": ["fastq_2"] }
+                    ]
+                }
+            }
+        ]
+    }
+}

@@ -8,7 +8,8 @@ process mob_recon {
     tuple val(sample_id), path(assembly)
 
     output:
-    tuple val(sample_id), path("${sample_id}*.fasta"), emit: sequences
+    tuple val(sample_id), path("${sample_id}_chromosome.fasta"), emit: chromosome
+    tuple val(sample_id), path("${sample_id}_plasmid*.fasta"), emit: plasmids, optional: true
     tuple val(sample_id), path("${sample_id}_mobtyper_plasmid_report.tsv"), path("${sample_id}_mobtyper_contig_report.tsv"), emit: mobtyper_reports, optional: true
     tuple val(sample_id), path("${sample_id}_mobtyper_contig_report.tsv"), emit: contig_reports
     tuple val(sample_id), path("${sample_id}*_provenance.yml"), emit: provenance
@@ -41,12 +42,15 @@ process mob_recon {
         --outdir ${sample_id} \
         --force
 
-    # fix fasta header to put whitespace after contig ID.
-    # BC23A123A_1_depth=10.0x_circular=true -> BC23A123A_1 depth=10.0x_circular=true
-    # BC23A123A_contig0001_depth=10.0x_circular=true -> BC23A123A_contig0001 depth=10.0x_circular=true
+    # Add the sample ID and separate the contig ID from its metadata.
+    # >2_length=120170_circular=true -> >BC23A123A_2 length=120170_circular=true
+    # >BC23A123A_contig0001_depth=10.0x_circular=true -> >BC23A123A_contig0001 depth=10.0x_circular=true
     for assembly in ${sample_id}/*.fasta;
     do
-        sed -i -r 's/^>${sample_id}_((contig)?[[:digit:]]+)_(.+)/>${sample_id}_\\1 \\3/' \${assembly};
+        sed -i -r \\
+            -e 's/^>${sample_id}_((contig)?[[:digit:]]+)_(.+)/>${sample_id}_\\1 \\3/' \\
+            -e 's/^>((contig)?[[:digit:]]+)_(.+)/>${sample_id}_\\1 \\3/' \\
+            \${assembly};
     done
     rename plasmid ${sample_id}_plasmid ${sample_id}/plasmid*.fasta || true
     cp ${sample_id}/${sample_id}_plasmid*.fasta . || true

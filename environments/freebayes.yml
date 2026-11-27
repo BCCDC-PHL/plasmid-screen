@@ -3,5 +3,9 @@ channels:
   - conda-forge
   - bioconda
 dependencies:
-  - freebayes=1.3.5
+  - freebayes=1.3.5=py39h93d9301_4
+  - htslib=1.14=h9753748_2
+  - vcflib=1.0.3=hecb563c_1
+  - libgcc-ng=12.1.0=h8d9b700_16
+  - libstdcxx-ng=12.1.0=ha89aaad_16
   - bcftools

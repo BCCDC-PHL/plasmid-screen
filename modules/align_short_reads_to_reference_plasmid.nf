@@ -1,4 +1,4 @@
-process align_reads_to_reference_plasmid {
+process align_short_reads_to_reference_plasmid {
 
     tag { sample_id + " / " + plasmid_id + " / " + resistance_gene }
 
@@ -16,7 +16,7 @@ process align_reads_to_reference_plasmid {
     script:
     // SAM flag 1540 = 'read unmapped' + 'read fails quality checks' + 'read is optical duplicate'
     """
-    printf -- "- process_name: align_reads_to_reference_plasmid\\n"          >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
+    printf -- "- process_name: align_short_reads_to_reference_plasmid\\n"          >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
     printf -- "  process_tags:\\n"                                           >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
     printf -- "    ref_plasmid_id: ${plasmid_id}\\n"                         >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
     printf -- "    resistance_gene: ${resistance_gene}\\n"                   >> ${sample_id}_${plasmid_id}_${resistance_gene}_bwa_samtools_provenance.yml
