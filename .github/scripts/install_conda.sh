@@ -13,7 +13,7 @@ wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.
 
 rm ~/miniconda.sh
 
-echo ". /opt/minconda3/etc/profile.d/conda.sh" >> ~/.bashrc
+echo ". /opt/miniconda3/etc/profile.d/conda.sh" >> ~/.bashrc
 
 conda update -n base -c defaults conda
 
